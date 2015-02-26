@@ -1,0 +1,31 @@
+@import "lesshat";
+@import "parameters";
+@import "fonts";
+@import (less) "normalize.css";
+
+// Prevent chrome from producing colored outlines around
+// the buttons!
+button:focus, input:focus {
+  outline:0 !important;
+}
+
+// Set the background color where no content is visible.
+body {
+  background-color: @bg-no-content-color;
+}
+
+// Default div containing the main content of the site (All except for the overlays). 
+// It is centered in the browser window with a width equal to the max content width 
+// variable. A blur of 0 is set so that it can be transitions to max-blur when an 
+// overlay is displayed.
+div#container {
+  .max_content_width;
+  margin: 0px auto;
+  .blur(0px);
+}
+
+@import "header";
+@import "toolbar";
+@import "results_info";
+@import "results";
+@import "overlays";

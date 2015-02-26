@@ -1,0 +1,116 @@
+@import "lesshat";
+@import "parameters";
+@import "fonts";
+
+// Style for the header (Including background & tool/results bar).
+div#header {
+  .max_content_width;
+  // The min and max height values are used by js to determine the max/min
+  // header sizes for the parralax effect.
+  min-height: (@min-header-height + @desktop-toolbar-height);
+  max-height: (@header-height + @desktop-toolbar-height);
+  // We use the local background attachment rather than fixed due to the background 
+  // shifting when the overlays are activated and the scollbar isn't active. The
+  // vertical position of the background is therefore maintained in js.
+  background:           @bg-content-color url(@bg-plate-file) no-repeat local;
+  background-size:      @desktop-max-content-width auto;
+  background-position:  center top;
+  // Make sure the header is above the results.
+  z-index:              5;
+}
+
+// This style is used for the div that replaces #header when its position
+// becomes fixed (aka. stickied). The height is set in js.
+div#header_placeholder {
+  .max_content_width;
+  height: 0px;
+}
+
+// Style for the div that vertically spaces the toolbar. TODO: Check to
+// see if we can replace this with an offset toolbar.
+div#bgspace {
+  height:     @header-height;
+}
+
+// Style for any fixed header item including the logo, search box and overlay buttons.
+.fixed_header_item {
+  position: fixed;
+  top:      0px;
+  z-index:  10;
+  .max_content_width;
+}
+
+// Style for the overlay controls about, contact, and login.
+div#control {
+  font-family:  @desktop-overlay-control-font, Arial, sans-serif;
+  z-index:      50;
+
+  // Default style for the overlay buttons, which sit at the top-right of the screen.
+  button {
+    font-size:    @desktop-overlay-control-font-size;
+    float:        right;
+    background:   transparent;
+    border:       0px;
+    margin-top:   @desktop-overlay-control-from-top;
+    margin-right: @desktop-overlay-control-from-right;
+    padding:      @desktop-overlay-control-padding;
+    color:        @desktop-overlay-control-color;
+    border-color: @desktop-overlay-control-color;
+
+    &:hover {
+      color:        @desktop-overlay-control-hover-color;
+      border-color: @desktop-overlay-control-hover-color;
+    }
+  }
+
+  // Unique stylings of the login overlay button.
+  button#login-bt {
+    font-size:  @desktop-overlay-control-login-font-size;
+    border:     @desktop-overlay-control-login-border-size solid;
+    .border-radius(@desktop-overlay-control-login-border-radius);
+  }
+}
+
+// Style for the header logo.
+img#logo {
+  display:    block;
+  margin:     0px auto;
+  min-width:  @desktop-max-content-width*@min-logo-width-ratio;
+  max-width:  @desktop-max-content-width*@max-logo-width-ratio;
+  width:      @desktop-max-content-width*@max-logo-width-ratio;
+}
+
+// Style for the search box. The table/table-cell displays and vertical alignments 
+// are required to fix the damned chrome-firefox-ie line-height differences.
+div#search {
+  display:          table;
+  margin:           0px auto;
+  padding:          @desktop-logo-searchbar-vspace 0px 0px 0px;
+  border:           0px;
+  width:            @desktop-searchbar-width;
+  height:           @desktop-searchbar-height;
+
+  // Search editbox style.
+  #search-eb {
+    display:        table-cell;
+    font-size:      @desktop-searchbar-font-size;
+    width:          (@desktop-searchbar-width - @desktop-searchbar-button-width - 2*@desktop-searchbar-stext-horiz-pad);
+    height:         @desktop-searchbar-height;
+    padding:        0px @desktop-searchbar-stext-horiz-pad;
+    border:         0px;
+    margin:         0px;
+    vertical-align: middle;
+  }
+  // Search button style.
+  #search-bt {
+    display:    table-cell;
+    font-size:  @desktop-searchbar-font-size;
+    width:      @desktop-searchbar-button-width;
+    height:     @desktop-searchbar-height;
+    border:     0px;
+    margin:     0px;
+    color:      @desktop-searchbar-button-color;
+    background-color: rgb(255,255,255);
+    vertical-align: middle;
+  }
+}

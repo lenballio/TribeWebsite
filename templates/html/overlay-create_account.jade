@@ -1,0 +1,17 @@
+div#create-account.overlay.user-overlay
+  div.overlay-content
+    span#create-account-close.close.glyphicon.glyphicon-remove
+    br
+    img(src='./images/tribe_logo_white.png')
+    h1 Sign up for Tribe
+    div.field
+      input#eb-create-account-user(type='text',name='tribe_createaccount_user',placeholder='Name')
+      span#icon.glyphicon.glyphicon-person
+    div.field
+      input#eb-create-account-user(type='text',name='tribe_createaccount_email',placeholder='Email')
+      span#icon.glyphicon.glyphicon-email
+    div.field
+      input#eb-create-account-pwd(type='text',name='tribe_createaccount_pwd',placeholder='Password')
+      span#icon.glyphicon.glyphicon-lock
+    button#create_user.bordered(type='button',name='tribe_create_user')
+      span Create User

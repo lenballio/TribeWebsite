@@ -1,0 +1,42 @@
+@import "lesshat";
+@import "parameters";
+@import "fonts";
+
+// Mixin for styles common to the logged-in and logged-out results info 
+.results_info_common {
+  display:          table;
+  width:            100%;
+  height:           @desktop-toolbar-height;
+  background-color: @bg-content-color;
+  padding:          0px;
+  margin:           0px;
+
+  span {
+    display:        table-cell;
+    vertical-align: middle;
+    white-space:    nowrap;
+  }
+
+  span#results_fn {
+    color:          rgb(143,157,163);
+    font-size:      14px;
+    padding-left:   10px;
+  }
+
+  span#result_num {
+    color:          @fg-content-color;
+    font-size:      24px;
+    padding-left:   10px;
+  }
+
+  span#spacer {
+    color:          @fg-content-color;
+    font-size:      24px;
+    width:          100%;
+  }
+}
+
+// The results info style when logged out (Duh!).
+div#results_info_logged_out {
+  .results_info_common;
+}

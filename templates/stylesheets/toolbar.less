@@ -1,0 +1,93 @@
+@import "lesshat";
+@import "parameters";
+@import "fonts";
+
+// Style for the toolbar and its sub-element.
+div#toolbar {
+  height:       @desktop-toolbar-height;
+  font-family:  @desktop-toolbar-font, Arial, sans-serif;
+  font-size:    @desktop-toolbar-font-size;
+  // Make sure the toolbar is above the results. Required for Chrome.
+  z-index:      5;
+
+  // Style for the toolbar element container.
+  ul {
+    display:          table;
+    width:            100%;
+    height:           100%;
+    margin:           0px;
+    padding:          0px;
+    text-align:       center;
+    list-style:       none;
+    background-color: @desktop-toolbar-bg-color;
+  }
+
+  // Style for toolbar elements.
+  ul li {
+    display:        table-cell;
+    position:       relative;     // Required for absolute positioning of dropdown box. You shouldn't really do this
+                                  // but it seems to work on browsers tested. TODO: Implement correct way.
+    cursor:         pointer;
+    vertical-align: middle;
+    white-space:    nowrap;
+    color:          @desktop-toolbar-text-color;
+    .transition(all 0.2s);
+    &:hover {
+      color:  @desktop-toolbar-text-hover-color;
+    }
+  }
+
+  // Container style for toolbar dropdown. Hidden until parent is hovered.
+  ul.toolbar-dropdown {
+    display:    none;
+    visibility: hidden;
+    opacity:    0;
+    position:   absolute;
+    top:        @desktop-toolbar-height;
+    left:       0;
+    background-color: @desktop-toolbar-dropdown-bg-color;
+    z-index:    6;  // Prevents dropdown from being hidden when refreshing page on Firefox.
+    .transition(opacity 0.2s);
+  }
+
+  // Style controlling the display of the dropdown when the toolbar item
+  // is hovered over.
+  ul li:hover ul.toolbar-dropdown {
+    display:    table;
+    visibility: visible;
+    opacity:    1;
+  }
+
+  // An element of the toolbar dropdown.
+  ul.toolbar-dropdown li {
+    display:          table-row;
+    color:            @desktop-toolbar-dropdown-text-color;
+    height:           @desktop-toolbar-height;
+    vertical-align:   middle;
+    white-space:      nowrap;
+    &:hover {
+      color:          @desktop-toolbar-dropdown-hover-text-color;
+    }
+  }
+
+  // Don't display the default radiobox or checkbox icons.
+  input[type="radio"], input[type="checkbox"] {
+    display: none;
+  }
+
+  // Style for checked radio/check boxes.
+  input[type="radio"]:checked + label, input[type="checkbox"]:checked + label {
+    background-color: @desktop-toolbar-rcb-checked-bg-color;
+    color:            @desktop-toolbar-rcb-checked-text-color;
+  }
+
+  // Style for radio/check box labels.
+  label {
+    display:        table-cell;
+    width:          100%;
+    height:         @desktop-toolbar-height; // Chrome requires actual size.
+    cursor:         pointer;
+    vertical-align: middle;
+    white-space:    nowrap;
+  }
+}

@@ -1,0 +1,79 @@
+mixin tblist(name)
+  li= name
+    ul.toolbar-dropdown
+      block
+
+div#toolbar
+  ul
+    +tblist('SORT BY')
+      li
+        input#toolbar_sort_1(type='radio',name='tribe_toolbar_sort',value='score',checked)
+        label(for='toolbar_sort_1') TRIBE SCORE
+      li
+        input#toolbar_sort_2(type='radio',name='tribe_toolbar_sort',value='else')
+        label(for='toolbar_sort_2') TRIBE SIZE
+    +tblist('TRIBE SCORE')
+      li
+        p 0-2
+      li
+        p 2-4
+      li
+        p 4-6
+      li
+        p 6-8
+      li
+        p 8-10
+    +tblist('PLATFORMS')
+      li
+        input#toolbar_platform_1(type='checkbox',name='tribe_toolbar_platform',value='facebook',checked)
+        label(for='toolbar_platform_1') FACEBOOK
+      li
+        input#toolbar_platform_2(type='checkbox',name='tribe_toolbar_platform',value='instagram',checked)
+        label(for='toolbar_platform_2') INSTAGRAM
+      li
+        input#toolbar_platform_3(type='checkbox',name='tribe_toolbar_platform',value='twitter',checked)
+        label(for='toolbar_platform_3') TWITTER
+      li
+        input#toolbar_platform_4(type='checkbox',name='tribe_toolbar_platform',value='youtube',checked)
+        label(for='toolbar_platform_4') YOUTUBE
+    +tblist('SIZE')
+      li
+        p 0-10K
+      li
+        p 10-50K
+      li
+        p 50-100K
+      li
+        p 100-500K
+      li
+        p 500-1000K
+      li
+        p 1M+
+    +tblist('GENDER')
+      li
+        input#toolbar_gender_1(type='checkbox',name='tribe_toolbar_gender',value='male',checked)
+        label(for='toolbar_gender_1') MALE
+      li
+        input#toolbar_gender_2(type='checkbox',name='tribe_toolbar_gender',value='female',checked)
+        label(for='toolbar_gender_2') FEMALE
+      li
+        input#toolbar_gender_3(type='checkbox',name='tribe_toolbar_gender',value='other',checked)
+        label(for='toolbar_gender_3') OTHER
+    +tblist('AGE')
+      li
+        p 0-20
+      li
+        p 20-30
+      li
+        p 30-40
+      li
+        p 40-50
+      li
+        p 50+
+    +tblist('CATEGORY')
+      li
+        p A
+      li
+        p B
+      li
+        p C

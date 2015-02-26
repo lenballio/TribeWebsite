@@ -1,0 +1,127 @@
+@import "lesshat";
+@import "parameters";
+@import "fonts";
+
+// Base style for all overlays.
+div.overlay {
+  display:    none;
+  position:   fixed;
+  top:        0px;
+  width:      100vw;
+  height:     100vh;
+  z-index:    100;
+  .opacity(0);
+  // Close icon style.
+  span.close {
+    font-size:    @desktop-overlay-close-icon-size;
+    margin-left:  50vw;
+    cursor:       pointer;
+  }
+}
+
+// Overlay content style. This centers all overlay content.
+div.overlay-content {
+  display:          table-cell;
+  margin:           0 auto;
+  text-align:       center;
+  vertical-align:   middle;
+  text-align:       center;
+
+  // Make sure any text is centered and takes up at most 50% of the
+  // viewport width.
+  p {
+    width:        50vw;
+    margin:       0 auto;
+  }
+}
+
+// Style for standard overlays.
+div.standard-overlay {
+  color:      @desktop-overlay-standard-color;
+  background: @desktop-overlay-standard-bg-color;
+
+  h1 {
+    font-family:  @desktop-overlay-standard-h1-font, Arial, sans-serif;
+    font-weight:  @desktop-overlay-standard-h1-font-weight;
+    font-size:    @desktop-overlay-standard-h1-font-size;
+  }
+  p {
+    font-family:  @desktop-overlay-standard-p-font, Arial, sans-serif;
+    font-size:    @desktop-overlay-standard-p-font-size;
+  }
+}
+
+// Style for user overlays.
+div.user-overlay {
+  background: @desktop-overlay-user-bg-color;
+  color:      @desktop-overlay-user-color;
+
+  h1 {
+    font-family:  @desktop-overlay-user-h1-font, Arial, sans-serif;
+    font-weight:  @desktop-overlay-user-h1-font-weight;
+    font-size:    @desktop-overlay-user-h1-font-size;
+  }
+  p {
+    font-family:  @desktop-overlay-standard-p-font, Arial, sans-serif;
+    font-size:    @desktop-overlay-standard-p-font-size;
+  }
+  img {
+    margin:   0px auto;
+    width:    @desktop-overlay-user-image-width;
+  }
+
+  // The style for a field div, including an editbox and icon.
+  .field {
+    position:     relative;
+    margin:       0px auto;
+    margin-top:   @desktop-overlay-user-edit-spacing;
+    width:        @desktop-overlay-user-edit-width;
+    height:       @desktop-overlay-user-edit-height;
+    color:        @desktop-overlay-user-edit-icon-color;
+
+    // Editbox style.
+    input {
+      display:      block;
+      font-size:    @desktop-overlay-user-edit-font-size;
+      font-family:  @desktop-overlay-user-edit-font-family, Arial, sans-serif;
+      width:        (@desktop-overlay-user-edit-width - 2*@desktop-searchbar-stext-horiz-pad - @desktop-overlay-user-edit-height);
+      height:       @desktop-overlay-user-edit-height;
+      border:       0px;
+      padding:      0px @desktop-searchbar-stext-horiz-pad 0px (@desktop-overlay-user-edit-height+@desktop-searchbar-stext-horiz-pad);
+      .border-radius(@desktop-overlay-user-border-radius);
+    }
+    // Icon denoting editbox type.
+    span#icon {
+      position:         absolute;
+      left:             0px;
+      pointer-events:   none;
+      font-size:        @desktop-overlay-user-edit-font-size;
+      padding-top:      (@desktop-overlay-user-edit-height - @desktop-overlay-user-edit-font-size)/2;
+      padding-left:     @desktop-overlay-user-edit-icon-padding-left;
+    }
+  }
+
+  // Button style.
+  button {
+    font-size:    @desktop-overlay-user-button-font-size;
+    font-family:  @desktop-overlay-user-button-font-family, Arial, sans-serif;
+    color:        @desktop-overlay-user-button-color;
+    background:   transparent;
+    margin:       @desktop-overlay-user-button-margin;
+    padding:      @desktop-overlay-user-button-padding;
+    border:       0px;
+
+    &:hover {
+      color:      @desktop-overlay-user-button-hover-color;
+    }
+
+    &.bordered {
+      border:         @desktop-overlay-user-button-border-size solid;
+      border-color:   @desktop-overlay-user-button-color;
+      &:hover {
+        border-color:   @desktop-overlay-user-button-hover-color;
+      }
+    }
+  }
+}
+

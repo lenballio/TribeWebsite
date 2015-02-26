@@ -1,0 +1,16 @@
+div#login.overlay.user-overlay
+  div.overlay-content
+    span#login-close.close.glyphicon.glyphicon-remove
+    br
+    img(src='./images/tribe_logo_white.png')
+    h1 Log in to Tribe
+    div.field
+      input#eb-login-user(type='text',name='tribe_login_email',placeholder='Email')
+      span#icon.glyphicon.glyphicon-email
+    div.field
+      input#eb-login-pwd(type='text',name='tribe_login_pwd',placeholder='Password')
+      span#icon.glyphicon.glyphicon-lock
+    button#create-account-open(type='button',name='tribe_login')
+      span Create Account
+    button#login.bordered(type='button',name='tribe_login')
+      span Login

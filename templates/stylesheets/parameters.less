@@ -1,0 +1,164 @@
+//
+// Style Parameters
+//
+
+// General styles.
+@bg-no-content-color:     #333333;    // Background color out of the content area.
+@bg-content-color:        #FFFFFF;    // Background color for the content area
+@bg-plate-file:           '/images/content-background-plate.jpg'; // Bacground image.
+
+// Content styles.
+@fg-content-color:            rgb(0,200,173); // Main foreground color.
+@desktop-max-content-width:   1200px;         // Width of the maximum content div on the desktop.
+@desktop-max-result-column:   5;              // Maximum number of result columns that are presented when viewing at
+                                              // @desktop-max-content-width . @desktop-max-content-width must be divisible
+                                              // by this value.
+
+// Header styles.
+@min-header-height:     210px;
+
+@desktop-overlay-control-font:        GothamBlock;       // Default overlay control font.
+@desktop-overlay-control-font-size:   14px;              // Default overlay control font size.
+@desktop-overlay-control-color:       rgb(255,255,255);  // Default overlay control font/border color.
+@desktop-overlay-control-hover-color: @fg-content-color; // Default overlay control font/border color.
+@desktop-overlay-control-from-top:    20px;              // Default padding betweem the overlay control button and the top of
+                                                         // the window.
+@desktop-overlay-control-from-right:  20px;              // Default padding betweem the overlay control button and the right
+                                                         // side of the window.
+@desktop-overlay-control-padding:     10px;              // Default overlay control button padding.
+
+@desktop-overlay-control-login-font-size:     15px;      // Unique font size for login overlay control.
+@desktop-overlay-control-login-border-size:   2px;       // Unique border size for login overlay control.
+@desktop-overlay-control-login-border-radius: 2px;       // Unique border radius for login overlay control.
+
+@desktop-logo-searchbar-vspace:       20px;   // Spacing between the logo and the search bar.
+@min-logo-width-ratio:                0.130;  // Ratio of @desktop-max-content-width.
+@max-logo-width-ratio:                0.267;  // Ratio of @desktop-max-content-width.
+
+@desktop-searchbar-width:             600px;              // Total width of the search bar.
+@desktop-searchbar-height:            48px;               // Total height of the search bar.
+@desktop-searchbar-button-width:      68px;               // Total width of the search button.
+@desktop-searchbar-button-color:      @fg-content-color;  // Color of the search icon.
+@desktop-searchbar-stext-horiz-pad:	  10px;               // Horizontal padding of the search bar text.
+@desktop-searchbar-font-size:         18px;               // Font size of the search bar text and button icon.
+
+@desktop-toolbar-height:                    48px;               // Height of the tool and results bar.
+@desktop-toolbar-font:                      GothamMedium;       // Default toolbar font.
+@desktop-toolbar-font-size:                 10px;               // Default toolbar font size.
+@desktop-toolbar-bg-color:                  @fg-content-color;
+@desktop-toolbar-text-color:                rgb(255,255,255);
+@desktop-toolbar-text-hover-color:          rgb(143,157,163);
+@desktop-toolbar-dropdown-bg-color:         @fg-content-color;
+@desktop-toolbar-dropdown-text-color:       rgb(255,255,255);
+@desktop-toolbar-dropdown-hover-text-color: rgb(143,157,163);
+@desktop-toolbar-rcb-checked-bg-color:      rgb(255,255,255);  // rcb = Radio/Check box
+@desktop-toolbar-rcb-checked-text-color:    @fg-content-color;
+
+// All overlay styles.
+@desktop-overlay-close-icon-size:           20px;
+
+// Standard overlay styles (About/Contact).
+@desktop-overlay-standard-color:           rgb(0,0,0);
+@desktop-overlay-standard-bg-color:        rgba(255,255,255,0.8);
+@desktop-overlay-standard-h1-font:         GothamLight;
+@desktop-overlay-standard-h1-font-weight:  lighter;
+@desktop-overlay-standard-h1-font-size:    36px;
+@desktop-overlay-standard-p-font:          GothamBook;
+@desktop-overlay-standard-p-font-size:     16px;
+
+// User overlay styles (Login/User/Create User).
+@desktop-overlay-user-color:                  rgb(255,255,255);
+@desktop-overlay-user-bg-color:               rgba(0,200,173,0.8);
+@desktop-overlay-user-h1-font:                GothamLight;
+@desktop-overlay-user-h1-font-weight:         lighter;
+@desktop-overlay-user-h1-font-size:           20px;
+@desktop-overlay-user-p-font:                 GothamBook;
+@desktop-overlay-user-p-font-size:            16px;
+@desktop-overlay-user-image-width:            200px;
+@desktop-overlay-user-edit-spacing:           20px;
+@desktop-overlay-user-edit-width:             400px;
+@desktop-overlay-user-edit-height:            40px;
+@desktop-overlay-user-edit-font-family:       GothamBlock;
+@desktop-overlay-user-edit-font-size:         18px;
+@desktop-overlay-user-edit-icon-padding-left: 16px;
+@desktop-overlay-user-edit-icon-color:        rgb(128,128,128);
+@desktop-overlay-user-border-radius:          6px;
+@desktop-overlay-user-button-color:           rgb(255,255,255);
+@desktop-overlay-user-button-hover-color:     @fg-content-color;
+@desktop-overlay-user-button-font-family:     GothamBlock;
+@desktop-overlay-user-button-font-size:       15px;
+@desktop-overlay-user-button-margin:          20px;
+@desktop-overlay-user-button-padding:         10px;
+@desktop-overlay-user-button-border-size:     2px;
+
+
+// Insight overlay styles.
+@desktop-overlay-insight-color:           rgb(0,0,0);
+@desktop-overlay-insight-bg-color:        rgba(255,255,255,0.8);
+@desktop-overlay-insight-close-btn:       rgba(0,200,173,0.8);  
+@desktop-overlay-insight-h1-font:                GothamLight;
+@desktop-overlay-insight-h1-font-weight:         lighter;
+@desktop-overlay-insight-h1-font-size:           20px;
+@desktop-overlay-insight-p-font:                 GothamBook;
+@desktop-overlay-insight-p-font-size:            16px;
+@desktop-overlay-insight-image-width:            200px;
+@desktop-overlay-insight-edit-spacing:           20px;
+@desktop-overlay-insight-edit-width:             400px;
+@desktop-overlay-insight-edit-height:            40px;
+@desktop-overlay-insight-edit-font-family:       GothamBlock;
+@desktop-overlay-insight-edit-font-size:         18px;
+@desktop-overlay-insight-edit-icon-padding-left: 16px;
+@desktop-overlay-insight-edit-icon-color:        rgb(128,128,128);
+@desktop-overlay-insight-border-radius:          6px;
+@desktop-overlay-insight-button-color:           rgb(255,255,255);
+@desktop-overlay-insight-button-hover-color:     @fg-content-color;
+@desktop-overlay-insight-button-font-family:     GothamBlock;
+@desktop-overlay-insight-button-font-size:       15px;
+@desktop-overlay-insight-button-margin:          20px;
+@desktop-overlay-insight-button-padding:         10px;
+@desktop-overlay-insight-button-border-size:     2px;
+
+// Results style.
+
+
+//
+// Build vars (Don't modify).
+//
+
+// The assets path relative to this file.
+@assets_path:             '../../assets/';
+
+//
+// Dependant variables (Don't modify).
+//
+
+// The height of the header scaled so that the image aspect is conserved.
+@header-height:   @desktop-max-content-width*(image-height("@{assets_path}@{bg-plate-file}")/
+                                              image-width("@{assets_path}@{bg-plate-file}"));
+
+// These are the breakpoints for the various screen widths. Seen as the removal of 1 then 2 
+// result columns.
+@desktop-content-width-l0:  @desktop-max-content-width;
+@desktop-content-width-l1:  ((@desktop-max-result-column - 1) * 
+                             (@desktop-max-content-width/@desktop-max-result-column));
+@desktop-content-width-l2:  ((@desktop-max-result-column - 2) * 
+                             (@desktop-max-content-width/@desktop-max-result-column));
+
+//
+// Helper mixins (Probably shouldn't modify).
+//
+
+// Set the width of an object to the max content width for a given screen size.
+.max_content_width {
+  @media screen and (min-width: @desktop-content-width-l0) {
+    width:    @desktop-content-width-l0;
+  }
+
+  @media screen and (min-width: @desktop-content-width-l1) and (max-width: @desktop-content-width-l0) {
+    width:    @desktop-content-width-l1;
+  }
+
+  @media screen and (max-width: @desktop-content-width-l1) {
+    width:    @desktop-content-width-l2;
+  }
+}
