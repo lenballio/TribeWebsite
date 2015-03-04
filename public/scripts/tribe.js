@@ -5,7 +5,6 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
   var d3 = require('d3');
   var util = require('./util.js');
   var overlay = require('./overlay.js');
-
   // Initialize the tribe structure.
   var tribe = {};
 
@@ -39,8 +38,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 
   // Setup the results control.
   tribe.results = require('./results.js');
-  
-   
+
   // Temporary function to create random results data.
   var rand_offset = 0;
   var get_random_data = function() {
@@ -74,6 +72,37 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
     }, 1000);
   }));
 
+  // At the moment if the search input is.
+  var scrollHeight = window.scrollY;
+  d3.select('input#search-eb').on('keyup', function(event){
+    tribe.results.remove_data(function(){
+      setTimeout(function(){
+        tribe.results.add_data(get_random_data());
+        tribe.results.update_view();
+      }, 1000);
+      
+    });
+    var text = d3.select('input#search-eb').property('value');
+    if(text.length === 0) {
+      //window.scrollTo(0, 0);
+    }
+    else {
+      scrollDownWhenKeyup();
+    }
+  });
+  function scrollDownWhenKeyup () {
+    setTimeout(function(){
+      scrollHeight += 20;
+      if(scrollHeight <= 600) {
+        window.scrollTo(0, scrollHeight);
+        scrollDownWhenKeyup();
+      }
+      else {
+        return false;
+      }
+    }, 3);
+  }
+
   // If we scoll near to the bottom of the page add more elements.
   d3.select(window).on('scroll', function () {
     var scroll_pos = util.vertical_scroll_pos();
@@ -91,7 +120,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
   tribe.results.update_view(); 
 })();
 
-}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_586a228a.js","/")
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_c705816f.js","/")
 },{"./header.js":2,"./overlay.js":3,"./results.js":4,"./user.js":5,"./util.js":6,"VCmEsw":12,"buffer":9,"d3":"P1rVcQ"}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
@@ -385,7 +414,7 @@ exports.update_view = function(){
  
   result_objs.select('img').on('click', function(d){
     // Are we currently viewing any details? 
-    if ( this.cur_view_id == '' ) {
+    if ( this.cur_view_id === '' ) {
       var info_div =
         d3.select('div#'+d.id)
           .select('div#info');
@@ -481,6 +510,7 @@ exports.set_d3_blur = function(blur) {
       .style('-webkit-filter', filter_style).style('-moz-filter', filter_style);
   };
 };
+
 
 }).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/util.js","/")
 },{"VCmEsw":12,"buffer":9}],"P1rVcQ":[function(require,module,exports){
