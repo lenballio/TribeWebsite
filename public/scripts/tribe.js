@@ -1,10 +1,119 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+var d3 = require('d3');
+
+var margin = {top: 30, right: 20, bottom: 35, left: 50},
+    width = 450 - margin.left - margin.right,
+    height = 380 - margin.top - margin.bottom;
+
+var parseDate = d3.time.format('%d-%b-%y').parse;
+
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient('bottom')
+    .ticks(5);
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient('left')
+    .ticks(5);
+
+var area = d3.svg.area()
+    .x(function(d) { return x(d.date); })
+    .y0(height)
+    .y1(function(d) { return y(d.close); });
+
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+    
+// function for the y grid lines
+function make_y_axis() {
+  return d3.svg.axis()
+      .scale(y)
+      .orient('left')
+      .ticks(5)
+      ;
+}
+
+exports.draw_areaChart = function() {
+	var datas = [{ date:'1-May-12', close:'58.13'}, { date:'30-Apr-12', close:'53.98'}, { date:'27-Apr-12', close:'67'}, { date:'26-Apr-12', close:'89.7'}, { date:'25-Apr-12', close:'99'}, { date:'24-Apr-12', close:'130.28'}, { date:'23-Apr-12', close:'166.7'}, { date:'20-Apr-12', close:'234.98'}, { date:'19-Apr-12', close:'345.44'}, { date:'18-Apr-12', close:'443.34'}, { date:'17-Apr-12', close:'543.7'}, { date:'16-Apr-12', close:'580.13'}, { date:'13-Apr-12', close:'605.23'}, { date:'12-Apr-12', close:'622.77'}, { date:'11-Apr-12', close:'626.2'}, { date:'10-Apr-12', close:'628.44'}, { date:'9-Apr-12', close:'636.23'}, { date:'5-Apr-12', close:'633.68'}, { date:'4-Apr-12', close:'624.31'}, { date:'3-Apr-12', close:'629.32'}, { date:'2-Apr-12', close:'618.63'}, { date:'30-Mar-12', close:'599.55'}, { date:'29-Mar-12', close:'609.86'}, { date:'28-Mar-12', close:'617.62'}, { date:'27-Mar-12', close:'614.48'}, { date:'26-Mar-12', close:'606.98'}];
+
+	var svg = d3.select('#areacontainer svg')
+	        .attr('width', width + margin.left + margin.right)
+	        .attr('height', height + margin.top + margin.bottom)
+	    .append('g')
+	        .attr('transform', 
+	              'translate(' + margin.left + ',' + margin.top + ')');
+
+	if (datas.length !== 0) {
+	    datas.forEach(function(d) {
+	        d.date = parseDate(d.date);
+	        d.close = +d.close;
+	    });
+
+	    // Scale the range of the data
+	    x.domain(d3.extent(datas, function(d) { return d.date; }));
+	    y.domain([0, d3.max(datas, function(d) { return d.close; })]);
+
+	    // Add the filled area
+	    svg.append('path')
+	        .datum(datas)
+	        .attr('class', 'area')
+	        .attr('d', area);
+
+
+	    // Draw the y Grid lines
+	    svg.append('g')            
+	        .attr('class', 'grid')
+	        .call(make_y_axis()
+	            .tickSize(-width, 0, 0)
+	            .tickFormat('')
+	        )
+	        ;
+
+	    // Add the valueline path.
+	    svg.append('path')
+	        .attr('d', valueline(datas));
+
+	    // Add the X Axis
+	    svg.append('g')
+	        .attr('class', 'x axis')
+	        .attr('transform', 'translate(0,' + height + ')')
+	        .call(xAxis);
+
+	    // Add the Y Axis
+	    svg.append('g')
+	        .attr('class', 'y axis')
+	        .call(yAxis);
+
+	}
+};
+
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/area.js","/")
+},{"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],2:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 (function(){
   var d3 = require('d3');
   var util = require('./util.js');
   var overlay = require('./overlay.js');
+  var radial = require('./radial.js');
+  var area = require('./area.js');
+  var slider = require('./slider.js');
+  
+  // slider
+  slider.setUpSlideShow('slides', 'slides-controls');
+
+  // radial chart draw
+  radial.start();
+
+  // area chart draw
+  area.draw_areaChart();
+
   // Initialize the tribe structure.
   var tribe = {};
 
@@ -105,6 +214,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 
   // If we scoll near to the bottom of the page add more elements.
   d3.select(window).on('scroll', function () {
+    scrollHeight = window.scrollY;
     var scroll_pos = util.vertical_scroll_pos();
     var scroll_limit = util.max_vertical_scroll() - window.innerHeight;
     if ( scroll_limit-scroll_pos < 240 ) {
@@ -120,6 +230,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
   tribe.results.update_view(); 
 })();
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 }).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_c705816f.js","/")
 },{"./header.js":2,"./overlay.js":3,"./results.js":4,"./user.js":5,"./util.js":6,"VCmEsw":12,"buffer":9,"d3":"P1rVcQ"}],2:[function(require,module,exports){
@@ -127,6 +238,10 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_305d8354.js","/")
 },{"./header.js":2,"./overlay.js":3,"./results.js":4,"./user.js":5,"./util.js":6,"1YiZ5S":12,"buffer":9,"d3":"tokjIE"}],2:[function(require,module,exports){
 >>>>>>> Stashed changes
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_409f7bd8.js","/")
+},{"./area.js":1,"./header.js":3,"./overlay.js":4,"./radial.js":5,"./results.js":6,"./slider.js":7,"./user.js":8,"./util.js":9,"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],3:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
 var util = require('./util.js');
@@ -195,8 +310,13 @@ exports.update = function() {
   this.last_scroll_pos = scroll_pos;
 }.bind(exports);
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/header.js","/")
 },{"./util.js":6,"1YiZ5S":12,"buffer":9,"d3":"tokjIE"}],3:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/header.js","/")
+},{"./util.js":9,"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],4:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
 var util = require('./util.js');
@@ -260,8 +380,326 @@ exports.Overlay = function(id) {
   }.bind(this);
 };
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/overlay.js","/")
 },{"./util.js":6,"1YiZ5S":12,"buffer":9,"d3":"tokjIE"}],4:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/overlay.js","/")
+},{"./util.js":9,"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],5:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+var d3 = require('d3');
+
+// Constructor for the radial.
+exports.radialProgress = function (parent) {
+    var _duration= 1000,
+        _selection,
+        _margin = {top:0, right:0, bottom:30, left:0},
+        __width = 120,
+        __height = 150,
+        _width,
+        _height,
+        _diameter,
+        _label='',
+        _fontSize=10;
+
+    var _mouseClick;
+
+    var _value= 0,
+        _minValue = 0,
+        _maxValue = 100;
+
+    var  _currentArc= 0, _currentArc2= 0, _currentValue=0;
+
+    var _arc = d3.svg.arc()
+        .startAngle(0 * (Math.PI/180)); //just radians
+
+    var _arc2 = d3.svg.arc()
+        .startAngle(0 * (Math.PI/180))
+        .endAngle(0); //just radians
+
+
+    _selection=d3.select(parent);
+
+    function component() {
+
+        _selection.each(function (data) {
+
+            // Select the svg element, if it exists.
+            var svg = d3.select(this).selectAll('svg').data([data]);
+
+            var enter = svg.enter().append('svg').attr('class','radial-svg').append('g');
+
+            measure();
+
+            svg.attr('width', __width)
+                .attr('height', __height);
+
+
+            var background = enter.append('g').attr('class','component')
+                .attr('cursor','pointer')
+                .on('click',onMouseClick);
+
+
+            _arc.endAngle(360 * (Math.PI/180));
+
+            background.append('rect')
+                .attr('class','background')
+                .attr('width', _width)
+                .attr('height', _height);
+            /*background.append('circle')
+                .attr('class','background')
+                .attr('_cx', _cx)
+                .attr('_cy', _cy)
+                .attr('r', _r)
+                ;*/
+
+            background.append('path')
+                .attr('transform', 'translate(' + _width/2 + ',' + _width/2 + ')')
+                .attr('d', _arc);
+
+            background.append('text')
+                .attr('class', 'label')
+                .attr('transform', 'translate(' + _width/2 + ',' + (_width + _fontSize) + ')')
+                .text(_label);
+           svg.select('g')
+                .attr('transform', 'translate(' + _margin.left + ',' + _margin.top + ')');
+
+
+            _arc.endAngle(_currentArc);
+            enter.append('g').attr('class', 'arcs');
+            var path = svg.select('.arcs').selectAll('.arc').data(data);
+            path.enter().append('path')
+                .attr('class','arc')
+                .attr('transform', 'translate(' + _width/2 + ',' + _width/2 + ')')
+                .attr('d', _arc);
+
+            //Another path in case we exceed 100%
+            var path2 = svg.select('.arcs').selectAll('.arc2').data(data);
+            path2.enter().append('path')
+                .attr('class','arc2')
+                .attr('transform', 'translate(' + _width/2 + ',' + _width/2 + ')')
+                .attr('d', _arc2);
+
+
+            enter.append('g').attr('class', 'labels');
+            var label = svg.select('.labels').selectAll('.label').data(data);
+            label.enter().append('text')
+                .attr('class','label')
+                .attr('y',_width/2+_fontSize/3)
+                .attr('x',_width/2)
+                .attr('cursor','pointer')
+                .attr('width',_width)
+                // .attr('x',(3*_fontSize/2))
+                .text(function (d) { return Math.round((_value-_minValue)/(_maxValue-_minValue)); })
+                .style('font-size',_fontSize+'px')
+                .on('click',onMouseClick);
+
+            path.exit().transition().duration(500).attr('x',1000).remove();
+
+
+            layout(svg);
+
+            function layout(svg) {
+
+                var ratio=(_value-_minValue)/(_maxValue-_minValue);
+                var endAngle=Math.min(360*ratio,360);
+                endAngle=endAngle * Math.PI/180;
+
+                path.datum(endAngle);
+                path.transition().duration(_duration)
+                    .attrTween('d', arcTween);
+
+                if (ratio > 1) {
+                    path2.datum(Math.min(360*(ratio-1),360) * Math.PI/180);
+                    path2.transition().delay(_duration).duration(_duration)
+                        .attrTween('d', arcTween2);
+                }
+
+                label.datum(Math.round(ratio*100));
+                label.transition().duration(_duration)
+                    .tween('text',labelTween);
+
+            }
+
+        });
+
+        function onMouseClick(d) {
+            if (typeof _mouseClick === 'function') {
+                _mouseClick.call();
+            }
+        }
+    }
+
+    function labelTween(a) {
+        var i = d3.interpolate(_currentValue, a);
+        _currentValue = i(0);
+
+        return function(t) {
+            _currentValue = i(t);
+            this.textContent = Math.round(i(t));
+        };
+    }
+
+    function arcTween(a) {
+        var i = d3.interpolate(_currentArc, a);
+
+        return function(t) {
+            _currentArc=i(t);
+            return _arc.endAngle(i(t))();
+        };
+    }
+
+    function arcTween2(a) {
+        var i = d3.interpolate(_currentArc2, a);
+
+        return function(t) {
+            return _arc2.endAngle(i(t))();
+        };
+    }
+
+
+    function measure() {
+        _width=_diameter - _margin.right - _margin.left - _margin.top - _margin.bottom;
+        _height=_width;
+        _fontSize=_width*0.2;
+        _arc.outerRadius(_width/2);
+        _arc.innerRadius(_width/2 * 0.85);
+        _arc2.outerRadius(_width/2 * 0.85);
+        _arc2.innerRadius(_width/2 * 0.85 - (_width/2 * 0.15));
+    }
+
+
+    component.render = function() {
+        measure();
+        component();
+        return component;
+    };
+
+    component.value = function (_) {
+        if (!arguments.length) {
+          return _value;
+        }
+        _value = [_];
+        _selection.datum([_value]);
+        return component;
+    };
+
+
+    component.margin = function(_) {
+        if (!arguments.length) { return _margin; }
+        _margin = _;
+        return component;
+    };
+
+    component.diameter = function(_) {
+        if (!arguments.length) { return _diameter; }
+        _diameter =  _;
+        return component;
+    };
+
+    component.minValue = function(_) {
+        if (!arguments.length) { return _minValue; }
+        _minValue = _;
+        return component;
+    };
+
+    component.maxValue = function(_) {
+        if (!arguments.length) { return _maxValue; }
+        _maxValue = _;
+        return component;
+    };
+
+    component.label = function(_) {
+        if (!arguments.length) { return _label; }
+        _label = _;
+        return component;
+    };
+
+    component._duration = function(_) {
+        if (!arguments.length) { return _duration; }
+        _duration = _;
+        return component;
+    };
+
+    component.onClick = function (_) {
+        if (!arguments.length) { return _mouseClick; }
+        _mouseClick=_;
+        return component;
+    };
+
+    return component;
+};
+
+var div1=d3.select('#div1');
+var div2=d3.select('#div2');
+var div3=d3.select('#div3');
+var div4=d3.select('#div4');
+
+function onClick1() {
+  deselect();
+  div1.attr('class','selectedRadial');
+}
+
+function onClick2() {
+  deselect();
+  div2.attr('class','selectedRadial');
+}
+
+function onClick3() {
+  deselect();
+  div3.attr('class','selectedRadial');
+}
+
+function onClick4() {
+  deselect();
+  div3.attr('class','selectedRadial');
+}
+
+function deselect() {
+  div1.attr('class','radial');
+  div2.attr('class','radial');
+  div3.attr('class','radial');
+  div4.attr('class','radial');
+}
+
+exports.start = function () {
+
+  exports.radialProgress('#div1')
+    .label('Facebook')
+    .onClick(onClick1)
+    .diameter(150)
+    .value(78)
+    .render();
+
+  exports.radialProgress('#div2')
+    .label('Twitter')
+    .onClick(onClick2)
+    .diameter(150)
+    .value(132)
+    .render();
+
+  exports.radialProgress('#div3')
+    .label('Instagram')
+    .onClick(onClick3)
+    .diameter(150)
+    .minValue(100)
+    .maxValue(200)
+    .value(150)
+    .render();
+  exports.radialProgress('#div4')
+    .label('Youtube')
+    .onClick(onClick4)
+    .diameter(150)
+    .minValue(100)
+    .maxValue(200)
+    .value(150)
+    .render();
+
+};
+
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/radial.js","/")
+},{"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],6:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
 var util = require('./util.js');
@@ -453,8 +891,158 @@ exports.update_view = function(){
     .call(util.set_d3_opacity('1'));
 }.bind(exports);
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/results.js","/")
 },{"./overlay.js":3,"./util.js":6,"1YiZ5S":12,"buffer":9,"d3":"tokjIE"}],5:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/results.js","/")
+},{"./overlay.js":4,"./util.js":9,"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],7:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+var d3 = require('d3');
+
+exports.setUpSlideShow = function (slidesContainerID, slidesControlsID)
+{
+
+    var slidePrefix            = 'slide-';
+    var slideControlPrefix     = 'slide-control-';
+    var slideHighlightClass    = 'highlight';
+    //var slidesContainerID      = 'slides';
+    //var slidesControlsID       = 'slides-controls';
+    var slideDelay             = 3000;
+    var slideAnimationInterval = 20;
+    var slideTransitionSteps   = 10;
+
+    var slidesCollection;
+    var slidesControllersCollection;
+    var totalSlides;
+
+    // initialize vars
+    var slideTransStep= 0;
+    var transTimeout  = 0;
+    var crtSlideIndex = 1;
+
+    var nextSlideIndex;
+    var crtSlide;
+    var nextSlide;
+
+    // collect the slides and the controls
+    slidesCollection = d3.select('#' + slidesContainerID).selectAll('.insight-wrapper-post');
+    slidesControllersCollection = d3.select('#' + slidesControlsID).selectAll('a');
+ 
+    totalSlides = slidesCollection.size();
+ 
+    if (totalSlides < 2) { return; }
+ 
+    //go through all slides
+    for (var i=0; i < slidesCollection.size(); i++)
+    {
+        // give IDs to slides and controls
+        slidesCollection[0][i].id = slidePrefix+(i+1);
+        slidesControllersCollection[0][i].id = slideControlPrefix+(i+1);
+ 
+        // attach onclick handlers to controls, highlight the first control
+        slidesControllersCollection[0][i].onclick = function(){clickSlide(this);};
+ 
+        //hide all slides except the first
+        if (i > 0) {
+            slidesCollection[0][i].style.display = 'none';
+        }
+        else {
+            slidesControllersCollection[0][i].className = slideHighlightClass;
+        }
+    }
+ 
+    // initialize vars
+    slideTransStep= 0;
+    transTimeout  = 0;
+    crtSlideIndex = 1;
+ 
+    // show the next slide
+    showSlide(2);
+
+    function showSlide(slideNo, immediate)
+    {
+        // don't do any action while a transition is in progress
+        if (slideTransStep !== 0 || slideNo === crtSlideIndex) {
+            return;
+        }
+     
+        clearTimeout(transTimeout);
+
+        // get references to the current slide and to the one to be shown next
+        nextSlideIndex = slideNo;
+        crtSlide = d3.select('#' + slidePrefix + crtSlideIndex)[0][0];
+        nextSlide = d3.select('#' + slidePrefix + nextSlideIndex)[0][0];
+        slideTransStep = 0;
+     
+        // start the transition now upon request or after a delay (default)
+        if (immediate === true) {
+            transSlide();
+        }
+        else {
+            transTimeout = setTimeout(transSlide, slideDelay);
+        }
+    }
+
+    function clickSlide(control)
+    {
+        showSlide(Number(control.id.substr(control.id.lastIndexOf('-')+1)),true);
+    }
+
+    function transSlide()
+    {
+        // make sure the next slide is visible (albeit transparent)
+        //nextSlide.style.display = 'block';
+        nextSlide.style.display = 'table-cell';
+     
+        // calculate opacity
+        var opacity = slideTransStep / slideTransitionSteps;
+     
+        // fade out the current slide
+        crtSlide.style.opacity = '' + (1 - opacity);
+        crtSlide.style.filter = 'alpha(opacity=' + (100 - opacity*100) + ')';
+     
+        // fade in the next slide
+        nextSlide.style.opacity = '' + opacity;
+        nextSlide.style.filter = 'alpha(opacity=' + (opacity*100) + ')';
+     
+        // if not completed, do this step again after a short delay
+        if (++slideTransStep <= slideTransitionSteps) {
+            transTimeout = setTimeout(transSlide, slideAnimationInterval);
+        }
+        else
+        {
+            // complete
+            crtSlide.style.display = 'none';
+            transComplete();
+        }
+    }
+
+    function transComplete()
+    {
+        slideTransStep = 0;
+        crtSlideIndex = nextSlideIndex;
+     
+        // for IE filters, removing filters reenables cleartype
+        if (nextSlide.style.removeAttribute) {
+            nextSlide.style.removeAttribute('filter');
+        }
+     
+        // show next slide
+        showSlide((crtSlideIndex >= totalSlides) ? 1 : crtSlideIndex + 1);
+     
+        //unhighlight all controls
+        for (var i=0; i < slidesControllersCollection.size(); i++) {
+            slidesControllersCollection[0][i].className = '';
+        }
+     
+        // highlight the control for the next slide
+        d3.select('#slide-control-' + crtSlideIndex)[0][0].className = slideHighlightClass;
+    }
+};
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/slider.js","/")
+},{"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],8:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // User data structure.
 // var user_data = exports.data = {};
@@ -464,8 +1052,13 @@ exports.logged_in = function () {
   return false;
 };
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/user.js","/")
 },{"1YiZ5S":12,"buffer":9}],6:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/user.js","/")
+},{"VCmEsw":15,"buffer":12}],9:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // Function to pad numbers.
 // n     - The number to pad.
@@ -519,6 +1112,7 @@ exports.set_d3_blur = function(blur) {
 <<<<<<< Updated upstream
 
 }).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/util.js","/")
+<<<<<<< HEAD
 },{"VCmEsw":12,"buffer":9}],"P1rVcQ":[function(require,module,exports){
 =======
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/util.js","/")
@@ -526,6 +1120,9 @@ exports.set_d3_blur = function(blur) {
 module.exports=require('tokjIE');
 },{}],"tokjIE":[function(require,module,exports){
 >>>>>>> Stashed changes
+=======
+},{"VCmEsw":15,"buffer":12}],"P1rVcQ":[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 (function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 !function() {
@@ -10036,8 +10633,15 @@ module.exports=require('tokjIE');
 
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../node_modules/d3/d3.js","/../node_modules/d3")
 },{"1YiZ5S":12,"buffer":9}],9:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/..\\node_modules\\d3\\d3.js","/..\\node_modules\\d3")
+},{"VCmEsw":15,"buffer":12}],"d3":[function(require,module,exports){
+module.exports=require('P1rVcQ');
+},{}],12:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
@@ -11149,8 +11753,13 @@ function assert (test, message) {
   if (!test) throw new Error(message || 'Failed assertion')
 }
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer/index.js","/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer")
 },{"1YiZ5S":12,"base64-js":10,"buffer":9,"ieee754":11}],10:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer\\index.js","/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer")
+},{"VCmEsw":15,"base64-js":13,"buffer":12,"ieee754":14}],13:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
@@ -11277,8 +11886,13 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer/node_modules/base64-js/lib/b64.js","/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer/node_modules/base64-js/lib")
 },{"1YiZ5S":12,"buffer":9}],11:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer\\node_modules\\base64-js\\lib\\b64.js","/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer\\node_modules\\base64-js\\lib")
+},{"VCmEsw":15,"buffer":12}],14:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
@@ -11365,8 +11979,13 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer/node_modules/ieee754/index.js","/../node_modules/gulp-browserify/node_modules/browserify/node_modules/buffer/node_modules/ieee754")
 },{"1YiZ5S":12,"buffer":9}],12:[function(require,module,exports){
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer\\node_modules\\ieee754\\index.js","/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\buffer\\node_modules\\ieee754")
+},{"VCmEsw":15,"buffer":12}],15:[function(require,module,exports){
+>>>>>>> origin/master
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // shim for using process in browser
 
@@ -11432,5 +12051,10 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
+<<<<<<< HEAD
 }).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/../node_modules/gulp-browserify/node_modules/browserify/node_modules/process/browser.js","/../node_modules/gulp-browserify/node_modules/browserify/node_modules/process")
 },{"1YiZ5S":12,"buffer":9}]},{},[1])
+=======
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\process\\browser.js","/..\\node_modules\\gulp-browserify\\node_modules\\browserify\\node_modules\\process")
+},{"VCmEsw":15,"buffer":12}]},{},[2])
+>>>>>>> origin/master

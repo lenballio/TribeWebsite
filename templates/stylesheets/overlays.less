@@ -155,7 +155,7 @@ div.popup {
 
 div.insight-popup {
   color:      @desktop-overlay-insight-color;
-  background: @desktop-overlay-insight-bg-color;
+  *background: @desktop-overlay-insight-bg-color;
     div.insight-overlay-content {
       display:          table-cell;
       margin:           8vh 5vh;
@@ -163,10 +163,10 @@ div.insight-popup {
     }    
 }
 
-div.insight-profile{
+div.insight-profile {
   float: left;
   width: 20%;
-  .insight-profile-img{
+  .insight-profile-img {
     float: left;
     height: 35vh;
     width: 100%;
@@ -177,7 +177,7 @@ div.insight-profile{
       object-fit: cover;
     }
   }
-  .insight-profile-wrapper{
+  .insight-profile-wrapper {
     background: #00c8ad;
     float: left;
     width: calc("100% - 50px");
@@ -185,48 +185,48 @@ div.insight-profile{
     padding: 1vh 20px 2vh 30px;
     height: 44vh;
     margin-top: -2vh;
-    .insight-profile-score{
+    .insight-profile-score {
       float: right;
       color: #fff;
       text-align: center;
-      h2{
+      h2 {
         font-size: 48px;
         margin: 0;
         font-family:    avenir, Arial, sans-serif;
         line-height: 48px;
         letter-spacing: -0.04em;
       }
-      p{
+      p {
         font-size: 10px;
         margin: 0;
         font-family:    avenir, Arial, sans-serif;
         text-transform: uppercase;
       }
     }
-    h1{
+    h1 {
       font-size: 42px;
       margin: 70px 0 30px 0;
       font-family:    avenir, Arial, sans-serif;
     }
-    p{
+    p {
       font-size: 14px;
       margin: 0 0 30px 0;
       font-family:    avenir, Arial, sans-serif;
       line-height: 20px;
     }
-    ul{
+    ul {
       list-style: none;
       margin: 0;
       padding: 0;
-      li{
+      li {
         float: left;
         width: 25%;
         text-align: center;
-        img{
+        img {
           border: 4px solid #fff;
           max-width: 100%;
         }
-        p{
+        p {
           font-family:    avenir, Arial, sans-serif;
           font-size: 16px;
           margin-bottom: 5px;
@@ -245,6 +245,58 @@ div.insight-wrapper{
     padding: 0 15%;
     width: 70%;
     height: 40vh;
+    background: @desktop-overlay-insight-bg-color;
+    position: relative;
+  }
+  .insight-wrapper-graph {
+    float: left;
+    padding: 0;
+    width: 100%;
+    height: 40vh;
+    background: rgba(255, 255, 255, 0.9);
+    h4 {
+      font-family:    avenir, Arial, sans-serif;
+      font-size: 12px;
+      color: #404854;
+      text-transform: uppercase;
+    }
+    div {
+      float: left;
+      width: 50%;
+    }
+  }
+  #areacontainer {
+    path {
+      stroke: steelblue;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: grey;
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+    }
+
+    .axis.y path {
+      display: none;
+    }
+
+    .grid .tick {
+      stroke: lightgrey;
+      stroke-opacity: 0.7;
+      shape-rendering: crispEdges;
+    }
+    .grid path {
+      stroke-width: 0;
+    }
+
+    .area {
+        fill: #00c8ad;
+        stroke-width: 0;
+    }
   }
   .insight-wrapper-post{
     display: table-cell;
@@ -270,6 +322,28 @@ div.insight-wrapper{
         color: #00c8ad;
         font-weight: bold;
       }
+    }
+  }
+  .slides-controls {
+    width:70%;
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    a {
+      margin:5px 15px;
+      width:12px;
+      height:12px;
+      background:#c0f1eb;
+      text-indent:-9000px;
+      overflow:hidden;
+      display: inline-block;
+      .rotate(45deg, 0, 0, 0, 0);
+    }
+    a:hover {
+      background:#30d2bc;
+    }
+    a.highlight {
+      background:#30d2bc;
     }
   }
   .insight-wrapper-sub-content{
@@ -323,6 +397,41 @@ div.insight-wrapper{
   }
 }
 
+// radial chart css
+.background {
+  fill: #FFFFFF;
+  fill-opacity: 0.01;
+}
+
+.component {
+  fill: #e1e1e1;
+}
+
+.component .label {
+  font-family: avenir, "Helvetic Neue", Helvetica, Arial;
+  text-anchor: middle;
+  fill: #0000FF;
+}
+
+.arc {
+  stroke-weight:0.1;
+  fill: #4e8fff;
+}
+
+.arc2 {
+  stroke-weight:0.1;
+  fill: #3660b0;
+}
+
+.label {
+  font-family:  avenir, "Helvetic Neue", Helvetica, Arial;
+  text-anchor: middle;
+}
+
+.radial-svg {
+  display: block;
+  margin: 0 auto;
+}
 
 // Style for about overlays.
 div.about-overlay {
