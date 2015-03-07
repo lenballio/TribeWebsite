@@ -82,6 +82,19 @@ img#logo {
 
 // Style for the search box. The table/table-cell displays and vertical alignments 
 // are required to fix the damned chrome-firefox-ie line-height differences.
+::-webkit-input-placeholder {
+  font-weight: 500;
+}
+:-moz-placeholder { /* Firefox 18- */
+  font-weight: 500;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+  font-weight: 500;
+}
+:-ms-input-placeholder {  
+  font-weight: 500;
+}
+
 div#search {
   display:          table;
   margin:           0px auto;

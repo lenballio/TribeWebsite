@@ -544,6 +544,20 @@ img#logo {
   max-width: 320.4px;
   width: 320.4px;
 }
+::-webkit-input-placeholder {
+  font-weight: 500;
+}
+:-moz-placeholder {
+  /* Firefox 18- */
+  font-weight: 500;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  font-weight: 500;
+}
+:-ms-input-placeholder {
+  font-weight: 500;
+}
 div#search {
   display: table;
   margin: 0px auto;
@@ -577,7 +591,7 @@ div#search #search-bt {
 div#toolbar {
   height: 48px;
   font-family: avenir, Arial, sans-serif;
-  font-size: 10px;
+  font-size: 13px;
   z-index: 5;
 }
 div#toolbar ul {
@@ -1110,24 +1124,33 @@ div.insight-wrapper .insight-wrapper-graph {
 div.insight-wrapper .insight-wrapper-graph h4 {
   font-family: avenir, Arial, sans-serif;
   font-size: 12px;
-  color: #404854;
+  color: #9da0a5;
   text-transform: uppercase;
+  margin: 1vh 0 1vh 10px;
 }
 div.insight-wrapper .insight-wrapper-graph div {
   float: left;
   width: 50%;
+  min-height: 18vh;
+}
+div.insight-wrapper #areacontainer {
+  font-family: avenir, Arial, sans-serif;
+  font-size: 12px;
 }
 div.insight-wrapper #areacontainer path {
-  stroke: steelblue;
+  stroke: #d8dde5;
   stroke-width: 2;
   fill: none;
 }
-div.insight-wrapper #areacontainer .axis path,
-div.insight-wrapper #areacontainer .axis line {
+div.insight-wrapper #areacontainer .axis path {
   fill: none;
   stroke: grey;
   stroke-width: 1;
   shape-rendering: crispEdges;
+}
+div.insight-wrapper #areacontainer .axis.x line {
+  stroke: grey;
+  stroke-width: 1;
 }
 div.insight-wrapper #areacontainer .axis.y path {
   display: none;
@@ -1152,8 +1175,9 @@ div.insight-wrapper .insight-wrapper-post {
 }
 div.insight-wrapper .insight-wrapper-post h4 {
   font-family: avenir, Arial, sans-serif;
-  font-size: 12px;
-  color: #404854;
+  font-size: 16px;
+  line-height: 0.5px;
+  color: #9da0a5;
   text-transform: uppercase;
 }
 div.insight-wrapper .insight-wrapper-post h3 {
@@ -1262,7 +1286,6 @@ div.insight-wrapper .insight-wrapper-sub-post:hover .insight-wrapper-sub-post-vi
 }
 .background {
   fill: #FFFFFF;
-  fill-opacity: 0.01;
 }
 .component {
   fill: #e1e1e1;
@@ -1270,11 +1293,12 @@ div.insight-wrapper .insight-wrapper-sub-post:hover .insight-wrapper-sub-post-vi
 .component .label {
   font-family: avenir, "Helvetic Neue", Helvetica, Arial;
   text-anchor: middle;
-  fill: #0000FF;
+  text-shadow: 1px 2px #bdbab8;
+  fill: #000;
 }
 .arc {
   stroke-weight: 0.1;
-  fill: #4e8fff;
+  fill: #00c8ad;
 }
 .arc2 {
   stroke-weight: 0.1;

@@ -257,27 +257,35 @@ div.insight-wrapper{
     h4 {
       font-family:    avenir, Arial, sans-serif;
       font-size: 12px;
-      color: #404854;
+      color: #9da0a5;
       text-transform: uppercase;
+      margin: 1vh 0 1vh 10px;
     }
     div {
       float: left;
       width: 50%;
+      min-height: 18vh;
     }
   }
   #areacontainer {
+    font-family:    avenir, Arial, sans-serif;
+    font-size: 12px;
     path {
-      stroke: steelblue;
+      stroke: #d8dde5;
       stroke-width: 2;
       fill: none;
     }
 
-    .axis path,
-    .axis line {
+    .axis path
+    {
       fill: none;
       stroke: grey;
       stroke-width: 1;
       shape-rendering: crispEdges;
+    }
+    .axis.x line {
+      stroke: grey;
+      stroke-width: 1;
     }
 
     .axis.y path {
@@ -294,26 +302,27 @@ div.insight-wrapper{
     }
 
     .area {
-        fill: #00c8ad;
-        stroke-width: 0;
+      fill: #00c8ad;
+      stroke-width: 0;
     }
   }
-  .insight-wrapper-post{
+  .insight-wrapper-post {
     display: table-cell;
     height: 40vh;
     vertical-align: middle;
     width: 100%;
-    h4{
+    h4 {
       font-family:    avenir, Arial, sans-serif;
-      font-size: 12px;
-      color: #404854;
+      font-size: 16px;
+      line-height: 0.5px;
+      color: #9da0a5;
       text-transform: uppercase;
     }
-    h3{
+    h3 {
       font-family:    avenir, Arial, sans-serif;
       font-size: 19px;
     }
-    p{
+    p {
       font-size: 16px;
       font-family:    avenir, Arial, sans-serif;
       margin: 0;
@@ -400,7 +409,6 @@ div.insight-wrapper{
 // radial chart css
 .background {
   fill: #FFFFFF;
-  fill-opacity: 0.01;
 }
 
 .component {
@@ -410,12 +418,13 @@ div.insight-wrapper{
 .component .label {
   font-family: avenir, "Helvetic Neue", Helvetica, Arial;
   text-anchor: middle;
-  fill: #0000FF;
+  text-shadow: 1px 2px #bdbab8;
+  fill: #000;
 }
 
 .arc {
   stroke-weight:0.1;
-  fill: #4e8fff;
+  fill: #00c8ad;
 }
 
 .arc2 {

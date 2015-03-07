@@ -2,7 +2,7 @@ require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof requ
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
 
-var margin = {top: 30, right: 20, bottom: 35, left: 50},
+var margin = {top: 50, right: 30, bottom: 50, left: 50},
     width = 450 - margin.left - margin.right,
     height = 380 - margin.top - margin.bottom;
 
@@ -14,11 +14,15 @@ var y = d3.scale.linear().range([height, 0]);
 var xAxis = d3.svg.axis()
     .scale(x)
     .orient('bottom')
+    .tickSize(2)
+    .tickPadding(8)
     .ticks(5);
 
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient('left')
+    .tickSize(0)
+    .tickPadding(8)
     .ticks(5);
 
 var area = d3.svg.area()
@@ -106,7 +110,26 @@ exports.draw_areaChart = function() {
   var slider = require('./slider.js');
   
   // slider
-  slider.setUpSlideShow('slides', 'slides-controls');
+  // average per post slider
+  var sliderParam = {
+    slidePrefix: 'slide-',
+    slideControlPrefix: 'slide-control-',
+    slidesContainerID: 'slides',
+    slidesControlsID: 'slides-controls',
+    slideDelay: 3000
+  };
+  var averageSlider = slider.setUpSlideShow.bind(sliderParam);
+  averageSlider();
+  // stats slider
+  var sliderParam1 = {
+    slidePrefix: 'slide1-',
+    slideControlPrefix: 'slide-control1-',
+    slidesContainerID: 'slides1',
+    slidesControlsID: 'slides-controls1',
+    slideDelay: 4000
+  };
+  var statsSlider = slider.setUpSlideShow.bind(sliderParam1);
+  statsSlider();
 
   // radial chart draw
   radial.start();
@@ -230,7 +253,7 @@ exports.draw_areaChart = function() {
   tribe.results.update_view(); 
 })();
 
-}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_409f7bd8.js","/")
+}).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/fake_785741c1.js","/")
 },{"./area.js":1,"./header.js":3,"./overlay.js":4,"./radial.js":5,"./results.js":6,"./slider.js":7,"./user.js":8,"./util.js":9,"VCmEsw":15,"buffer":12,"d3":"P1rVcQ"}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
@@ -377,6 +400,9 @@ exports.radialProgress = function (parent) {
         _margin = {top:0, right:0, bottom:30, left:0},
         __width = 120,
         __height = 150,
+        _cx = 60,
+        _cy = 60,
+        _r = 60,
         _width,
         _height,
         _diameter,
@@ -423,20 +449,22 @@ exports.radialProgress = function (parent) {
 
             _arc.endAngle(360 * (Math.PI/180));
 
-            background.append('rect')
+            /*background.append('rect')
                 .attr('class','background')
                 .attr('width', _width)
-                .attr('height', _height);
-            /*background.append('circle')
-                .attr('class','background')
-                .attr('_cx', _cx)
-                .attr('_cy', _cy)
-                .attr('r', _r)
+                .attr('height', _height)
                 ;*/
 
-            background.append('path')
+            background.append('circle')
+                .attr('class','background')
+                .attr('cx', _cx)
+                .attr('cy', _cy)
+                .attr('r', _r)
+                ;
+
+            /*background.append('path')
                 .attr('transform', 'translate(' + _width/2 + ',' + _width/2 + ')')
-                .attr('d', _arc);
+                .attr('d', _arc);*/
 
             background.append('text')
                 .attr('class', 'label')
@@ -543,8 +571,8 @@ exports.radialProgress = function (parent) {
         _width=_diameter - _margin.right - _margin.left - _margin.top - _margin.bottom;
         _height=_width;
         _fontSize=_width*0.2;
-        _arc.outerRadius(_width/2);
-        _arc.innerRadius(_width/2 * 0.85);
+        _arc.outerRadius(_width/2* 0.85);
+        _arc.innerRadius(_width/2 * 0.7);
         _arc2.outerRadius(_width/2 * 0.85);
         _arc2.innerRadius(_width/2 * 0.85 - (_width/2 * 0.15));
     }
@@ -656,7 +684,7 @@ exports.start = function () {
     .label('Twitter')
     .onClick(onClick2)
     .diameter(150)
-    .value(132)
+    .value(82)
     .render();
 
   exports.radialProgress('#div3')
@@ -673,7 +701,7 @@ exports.start = function () {
     .diameter(150)
     .minValue(100)
     .maxValue(200)
-    .value(150)
+    .value(170)
     .render();
 
 };
@@ -876,15 +904,21 @@ exports.update_view = function(){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var d3 = require('d3');
 
-exports.setUpSlideShow = function (slidesContainerID, slidesControlsID)
+exports.setUpSlideShow = function ()
 {
 
-    var slidePrefix            = 'slide-';
+    /*var slidePrefix            = 'slide-';
     var slideControlPrefix     = 'slide-control-';
+    var slidesContainerID      = 'slides';
+    var slidesControlsID       = 'slides-controls';
+    var slideDelay             = 3000;*/
+    var slidePrefix            = this.slidePrefix;
+    var slideControlPrefix     = this.slideControlPrefix;
+    var slidesContainerID      = this.slidesContainerID;
+    var slidesControlsID       = this.slidesControlsID;
+    var slideDelay             = this.slideDelay;
+    
     var slideHighlightClass    = 'highlight';
-    //var slidesContainerID      = 'slides';
-    //var slidesControlsID       = 'slides-controls';
-    var slideDelay             = 3000;
     var slideAnimationInterval = 20;
     var slideTransitionSteps   = 10;
 
@@ -1013,7 +1047,8 @@ exports.setUpSlideShow = function (slidesContainerID, slidesControlsID)
         }
      
         // highlight the control for the next slide
-        d3.select('#slide-control-' + crtSlideIndex)[0][0].className = slideHighlightClass;
+        //d3.select('#slide-control-' + crtSlideIndex)[0][0].className = slideHighlightClass;
+        d3.select('#' + slideControlPrefix + crtSlideIndex)[0][0].className = slideHighlightClass;
     }
 };
 }).call(this,require("VCmEsw"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/slider.js","/")
