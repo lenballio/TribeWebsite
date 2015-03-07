@@ -186,3 +186,10 @@
     width:    @desktop-content-width-l2;
   }
 }
+.rotate(@deg, @tX, @tY, @sX, @sY) { 
+  -moz-transform: scale(1) rotate(@deg) translate(@tX, @tY) skew(@sX, @sY);
+  -webkit-transform: scale(1) rotate(@deg) translate(@tX, @tY) skew(@sX, @sY);
+  -o-transform: scale(1) rotate(@deg) translate(@tX, @tY) skew(@sX, @sY);
+  -ms-transform: scale(1) rotate(@deg) translate(@tX, @tY) skew(@sX, @sY);
+  transform: scale(1) rotate(@deg) translate(@tX, @tY) skew(@sX, @sY);
+}

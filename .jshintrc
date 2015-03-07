@@ -15,6 +15,8 @@
   "undef"     : true,
   "unused"    : "vars",
   "trailing"  : true,
+  "loopfunc"  : true,
+  "evil" : 1,
   "globals": {
     "after"      : false,
     "afterEach"  : false,
